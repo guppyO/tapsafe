@@ -1,0 +1,5 @@
+data/
+docs/screenshots/
+docs/research/screenshots/
+*.csv
+scripts/
