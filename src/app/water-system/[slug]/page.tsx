@@ -5,7 +5,7 @@ import { Droplets, MapPin, Users, AlertTriangle, Shield, Building2, Phone, Calen
 import { getWaterSystem, getViolations, getLcrSamples, getRelatedSystems } from "@/lib/queries";
 import { waterSystemMetadata } from "@/lib/metadata";
 import { supabase } from "@/lib/supabase";
-import { formatNumber, formatDate, pwsTypeLabel, waterSourceLabel, ownerTypeLabel } from "@/lib/utils";
+import { formatNumber, formatDate, pwsTypeLabel, waterSourceLabel, ownerTypeLabel, contaminantName } from "@/lib/utils";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SafetyGrade, calculateGrade } from "@/components/SafetyGrade";
 import { Badge } from "@/components/ui/badge";
@@ -195,7 +195,7 @@ export default async function WaterSystemPage({ params }: PageProps) {
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             {ws.org_name && <p className="font-medium">{ws.org_name}</p>}
-            {ws.admin_name && <p className="text-muted-foreground">{ws.admin_name}</p>}
+            {ws.admin_name && ws.admin_name !== ws.org_name && <p className="text-muted-foreground">{ws.admin_name}</p>}
             {ws.address_line1 && <p className="text-muted-foreground">{ws.address_line1}</p>}
             {ws.city_name && (
               <p className="text-muted-foreground">
@@ -268,7 +268,7 @@ export default async function WaterSystemPage({ params }: PageProps) {
                   {violations.slice(0, 25).map((v, i) => (
                     <tr key={i} className="border-b border-border/50 hover:bg-muted/50">
                       <td className="py-2 pr-4 whitespace-nowrap">{formatDate(v.begin_date)}</td>
-                      <td className="py-2 pr-4">{v.contaminant_code}</td>
+                      <td className="py-2 pr-4">{contaminantName(v.contaminant_code)}</td>
                       <td className="py-2 pr-4">
                         {v.is_health_based ? (
                           <Badge variant="destructive" className="text-xs">Health</Badge>

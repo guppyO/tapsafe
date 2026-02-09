@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangle } from "lucide-react";
+import { contaminantName } from "@/lib/utils";
 
 interface Violation {
   pwsid: string;
@@ -81,7 +82,7 @@ export function RecentViolations({
                 }
                 className="text-xs"
               >
-                {v.contaminant_code || "Violation"}
+                {contaminantName(v.contaminant_code)}
               </Badge>
             </div>
           </CardContent>

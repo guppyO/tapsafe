@@ -57,3 +57,63 @@ export function ownerTypeLabel(code: string | null): string {
     default: return code || "Unknown";
   }
 }
+
+const CONTAMINANT_NAMES: Record<string, string> = {
+  "0200": "Surface Water Treatment",
+  "0300": "Enhanced Surface Water Treatment",
+  "0400": "Disinfection Byproducts",
+  "0999": "Chlorine",
+  "1005": "Arsenic",
+  "1020": "Chromium",
+  "1025": "Fluoride",
+  "1040": "Nitrate",
+  "1041": "Nitrite",
+  "2010": "Lindane (BHC-Gamma)",
+  "2015": "Methoxychlor",
+  "2020": "Toxaphene",
+  "2039": "DEHP Phthalate",
+  "2050": "Atrazine",
+  "2065": "Heptachlor",
+  "2067": "Heptachlor Epoxide",
+  "2105": "2,4-D",
+  "2110": "2,4,5-TP (Silvex)",
+  "2326": "Pentachlorophenol",
+  "2378": "1,2,4-Trichlorobenzene",
+  "2380": "cis-1,2-Dichloroethylene",
+  "2456": "Haloacetic Acids (HAA5)",
+  "2946": "Ethylene Dibromide",
+  "2950": "Total Trihalomethanes",
+  "2955": "Xylenes",
+  "2959": "Chlordane",
+  "2964": "Dichloromethane",
+  "2968": "o-Dichlorobenzene",
+  "2969": "p-Dichlorobenzene",
+  "2976": "Vinyl Chloride",
+  "2977": "1,1-Dichloroethylene",
+  "2979": "trans-1,2-Dichloroethylene",
+  "2980": "1,2-Dichloroethane",
+  "2981": "1,1,1-Trichloroethane",
+  "2982": "Carbon Tetrachloride",
+  "2983": "1,2-Dichloropropane",
+  "2984": "Trichloroethylene",
+  "2985": "1,1,2-Trichloroethane",
+  "2987": "Tetrachloroethylene",
+  "2989": "Chlorobenzene",
+  "2990": "Benzene",
+  "2991": "Toluene",
+  "2992": "Ethylbenzene",
+  "2996": "Styrene",
+  "3014": "E. coli",
+  "3100": "Total Coliform",
+  "4006": "Combined Uranium",
+  "4010": "Combined Radium",
+  "5000": "Lead & Copper Rule",
+  "7000": "Consumer Confidence",
+  "7500": "Public Notice",
+  "8000": "Revised Total Coliform",
+};
+
+export function contaminantName(code: string | null): string {
+  if (!code) return "Unknown";
+  return CONTAMINANT_NAMES[code] || code;
+}
