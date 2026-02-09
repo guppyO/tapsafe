@@ -1,0 +1,37 @@
+{
+  "siteName": "TapSafe",
+  "niche": "drinking water quality and safety data",
+  "dataSource": "EPA Safe Drinking Water Information System (SDWIS)",
+  "targetAudience": [
+    "homeowners concerned about tap water safety",
+    "parents wanting clean water for their families",
+    "renters checking water quality before signing a lease",
+    "health-conscious consumers researching filtration"
+  ],
+  "keyEntities": [
+    "public water systems",
+    "drinking water violations",
+    "lead and copper levels",
+    "contaminants",
+    "states",
+    "cities"
+  ],
+  "topicTemplates": [
+    "How to read and understand your annual water quality report",
+    "What the EPA lead action level actually means for your health",
+    "How to test your home tap water for contaminants",
+    "Common contaminants found in US drinking water",
+    "Best water filtration methods for different contaminant types",
+    "How to find out what is in your city tap water",
+    "What happens when a water system violates EPA standards",
+    "Signs your tap water may not be safe to drink"
+  ],
+  "internalLinkPages": [
+    "/search",
+    "/state",
+    "/about"
+  ],
+  "authorName": "Sarah Mitchell",
+  "authorBio": "Environmental health researcher and water quality data analyst with a background in public health and environmental science.",
+  "siteUrl": "https://tapsafe.org"
+}
