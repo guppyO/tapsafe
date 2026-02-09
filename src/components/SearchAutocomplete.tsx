@@ -205,13 +205,16 @@ export function SearchAutocomplete({
             }}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
+            role="combobox"
             aria-label="Search water systems"
             aria-expanded={isOpen}
+            aria-controls="search-listbox"
             aria-haspopup="listbox"
+            aria-autocomplete="list"
             autoComplete="off"
             className={
               isHero
-                ? "w-full pl-10 pr-10 h-12 text-base rounded-lg border bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                ? "w-full pl-10 pr-10 h-12 text-base rounded-lg border bg-white/10 border-white/20 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
                 : "w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
             }
           />
@@ -232,6 +235,7 @@ export function SearchAutocomplete({
       {isOpen && totalResults > 0 && (
         <div
           ref={dropdownRef}
+          id="search-listbox"
           role="listbox"
           className={`absolute z-50 mt-1 w-full rounded-xl border bg-popover text-popover-foreground shadow-xl overflow-hidden ${
             isHero ? "max-w-lg" : ""
