@@ -31,7 +31,7 @@ export function HeroSection() {
         src="/images/hero-water.jpg"
         alt=""
         fill
-        className="object-cover"
+        className="object-cover object-[55%_30%]"
         priority
         quality={85}
       />
