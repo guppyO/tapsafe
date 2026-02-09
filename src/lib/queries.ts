@@ -157,7 +157,8 @@ export async function searchWaterSystems(query: string, state?: string, page = 0
     if (/^\d{5}$/.test(query)) {
       q = q.eq("zip_code", query);
     } else {
-      q = q.ilike("pws_name", `%${query}%`);
+      // Search both name and city
+      q = q.or(`pws_name.ilike.%${query}%,city_name.ilike.%${query}%`);
     }
   }
 

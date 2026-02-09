@@ -1,31 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Search, Droplets } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Droplets } from "lucide-react";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 
 export function HeroSection() {
-  const [query, setQuery] = useState("");
-  const router = useRouter();
-
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    const trimmed = query.trim();
-    if (!trimmed) return;
-
-    // Check if it looks like a ZIP code
-    if (/^\d{5}$/.test(trimmed)) {
-      router.push(`/zip/${trimmed}`);
-    } else {
-      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
-    }
-  }
-
   return (
-    <section className="relative overflow-hidden bg-gray-950">
+    <section className="relative bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-16 sm:py-20 lg:py-24">
           {/* Text content */}
@@ -48,24 +29,7 @@ export function HeroSection() {
               levels, and safety data from the EPA.
             </p>
 
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-col sm:flex-row gap-3 max-w-lg"
-            >
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Enter ZIP code, city, or utility name..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="pl-10 h-12 text-base bg-white/10 border-white/20"
-                />
-              </div>
-              <Button type="submit" size="lg" className="h-12 px-8">
-                Check Water Quality
-              </Button>
-            </form>
+            <SearchAutocomplete variant="hero" />
 
             <p className="mt-4 text-xs text-gray-500">
               Covering 432,000+ public water systems across all 50 states and

@@ -1,13 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Search, MapPin, Users, AlertTriangle, Droplets } from "lucide-react";
+import { MapPin, Users, AlertTriangle, Droplets } from "lucide-react";
 import { searchWaterSystems, getAllStates } from "@/lib/queries";
 import { searchMetadata } from "@/lib/metadata";
 import { formatNumber } from "@/lib/utils";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SafetyGrade } from "@/components/SafetyGrade";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
+import { StateFilter } from "@/components/StateFilter";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -38,39 +40,15 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
       <h1 className="text-2xl md:text-3xl font-bold mb-6">Search Water Systems</h1>
 
-      {/* Search Form */}
-      <form className="flex flex-col sm:flex-row gap-3 mb-8">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            name="q"
-            defaultValue={query}
-            placeholder="Enter ZIP code, city, or utility name..."
-            aria-label="Search water systems"
-            className="w-full pl-10 pr-4 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          />
+      {/* Search with Autocomplete + State Filter */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-8 items-start">
+        <div className="flex-1 min-w-0">
+          <SearchAutocomplete variant="page" defaultValue={query} />
         </div>
-        <select
-          name="state"
-          defaultValue={stateFilter}
-          aria-label="Filter by state"
-          className="px-3 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-        >
-          <option value="">All States</option>
-          {states.map((s) => (
-            <option key={s.code} value={s.code}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-        <button
-          type="submit"
-          className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          Search
-        </button>
-      </form>
+        <Suspense>
+          <StateFilter states={states} currentState={stateFilter} />
+        </Suspense>
+      </div>
 
       {/* Results */}
       {(query || stateFilter) && (
