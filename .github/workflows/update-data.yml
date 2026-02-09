@@ -1,0 +1,39 @@
+name: Update Data
+
+on:
+  schedule:
+    - cron: '0 6 1 */3 *'  # Quarterly (1st of every 3rd month at 6 AM UTC)
+  workflow_dispatch:
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Download and ingest data
+        run: |
+          npx tsx scripts/download-data.ts
+          npx tsx scripts/ingest.ts
+          npx tsx scripts/ingest-violations.ts
+          npx tsx scripts/update-computed-fields.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        timeout-minutes: 30
+
+      - name: Trigger Vercel rebuild
+        run: |
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}" || echo "Deploy hook not configured"
+
+      - name: Summary
+        run: |
+          echo "## Data Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: Complete" >> $GITHUB_STEP_SUMMARY

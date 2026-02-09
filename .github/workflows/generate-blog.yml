@@ -1,0 +1,79 @@
+name: Generate Blog Article
+
+on:
+  schedule:
+    - cron: '0 10 * * 2'   # Tuesday at 10 AM UTC
+    - cron: '0 10 * * 5'   # Friday at 10 AM UTC
+  workflow_dispatch:
+    inputs:
+      article_count:
+        description: 'Number of articles to generate'
+        required: false
+        default: '1'
+
+jobs:
+  generate-article:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate blog article(s)
+        run: |
+          ARTICLES="${{ github.event.inputs.article_count || '1' }}"
+          for i in $(seq 1 $ARTICLES); do
+            echo "Generating article $i of $ARTICLES..."
+            npx tsx scripts/blog-automation/generate-blog.ts
+            sleep 5
+          done
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SITE_CONFIG: ./blog-config.json
+          SITE_URL: ${{ secrets.SITE_URL }}
+
+      - name: Check for new articles
+        id: check
+        run: |
+          if [ -n "$(git status --porcelain content/blog/)" ]; then
+            echo "new_articles=true" >> $GITHUB_OUTPUT
+            echo "New articles detected"
+          else
+            echo "No new articles generated"
+          fi
+
+      - name: Commit and push
+        if: steps.check.outputs.new_articles == 'true'
+        run: |
+          git config user.name "Blog Generator"
+          git config user.email "blog@automated.local"
+          git add content/blog/
+          git commit -m "blog: Add new article $(date +%Y-%m-%d)
+
+          Generated automatically via GitHub Actions
+          Model: google/gemini-3-flash-preview (or fallback)"
+          git push
+
+      - name: Trigger Vercel rebuild
+        if: steps.check.outputs.new_articles == 'true'
+        run: |
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}" || echo "Deploy hook not configured (optional)"
+
+      - name: Summary
+        run: |
+          echo "## Blog Generation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Articles requested: ${{ github.event.inputs.article_count || '1' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- New articles committed: ${{ steps.check.outputs.new_articles || 'false' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u)" >> $GITHUB_STEP_SUMMARY
