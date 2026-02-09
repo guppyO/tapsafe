@@ -312,7 +312,7 @@ export default async function WaterSystemPage({ params }: PageProps) {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Lead */}
               <div>
-                <h3 className="font-semibold mb-2">Lead (90th Percentile)</h3>
+                <h2 className="font-semibold mb-2 text-base">Lead (90th Percentile)</h2>
                 <p className="text-sm text-muted-foreground mb-3">EPA action level: 15 ppb</p>
                 {leadSamples.length > 0 ? (
                   <div className="space-y-2">
@@ -343,7 +343,7 @@ export default async function WaterSystemPage({ params }: PageProps) {
 
               {/* Copper */}
               <div>
-                <h3 className="font-semibold mb-2">Copper (90th Percentile)</h3>
+                <h2 className="font-semibold mb-2 text-base">Copper (90th Percentile)</h2>
                 <p className="text-sm text-muted-foreground mb-3">EPA action level: 1,300 ppb</p>
                 {copperSamples.length > 0 ? (
                   <div className="space-y-2">
@@ -385,7 +385,7 @@ export default async function WaterSystemPage({ params }: PageProps) {
           <CardContent className="space-y-4">
             {faqs.map((f, i) => (
               <div key={i}>
-                <h3 className="font-semibold text-sm">{f.question}</h3>
+                <h2 className="font-semibold text-sm">{f.question}</h2>
                 <p className="text-sm text-muted-foreground mt-1">{f.answer}</p>
               </div>
             ))}

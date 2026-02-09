@@ -40,7 +40,7 @@ export function Footer() {
 
           {/* Explore */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Explore</h3>
+            <p className="font-semibold text-sm mb-3">Explore</p>
             <ul className="space-y-2">
               {footerLinks.explore.map((link) => (
                 <li key={link.href}>
@@ -57,7 +57,7 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Resources</h3>
+            <p className="font-semibold text-sm mb-3">Resources</p>
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.href}>
@@ -74,7 +74,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Legal</h3>
+            <p className="font-semibold text-sm mb-3">Legal</p>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>

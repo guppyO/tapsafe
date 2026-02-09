@@ -47,12 +47,14 @@ export default async function SearchPage({ searchParams }: PageProps) {
             name="q"
             defaultValue={query}
             placeholder="Enter ZIP code, city, or utility name..."
+            aria-label="Search water systems"
             className="w-full pl-10 pr-4 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
         <select
           name="state"
           defaultValue={stateFilter}
+          aria-label="Filter by state"
           className="px-3 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
         >
           <option value="">All States</option>
