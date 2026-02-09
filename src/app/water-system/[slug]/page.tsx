@@ -50,16 +50,9 @@ export default async function WaterSystemPage({ params }: PageProps) {
     ws.lead_90th_percentile
   );
 
-  // Get avg violations for state comparison
-  const { data: stateSystemsData } = await supabase
-    .from("water_systems")
-    .select("violation_count")
-    .eq("state_code", ws.state_code)
-    .eq("pws_activity_code", "A")
-    .gt("violation_count", 0);
-  const avgViolations = stateSystemsData && stateSystemsData.length > 0
-    ? stateSystemsData.reduce((sum, s) => sum + (s.violation_count || 0), 0) / stateSystemsData.length
-    : 0;
+  // Get avg violations for state comparison via RPC (avoids 1000-row limit)
+  const { data: avgViolationsData } = await supabase.rpc("get_state_avg_violations", { p_state_code: ws.state_code });
+  const avgViolations = Number(avgViolationsData) || 0;
 
   // Build breadcrumbs
   const breadcrumbs = [

@@ -18,15 +18,12 @@ export const metadata: Metadata = {
 export default async function StatesIndexPage() {
   const states = await getAllStates();
 
-  // Get system counts per state
-  const { data: stateCounts } = await supabase
-    .from("water_systems")
-    .select("state_code")
-    .eq("pws_activity_code", "A");
+  // Get system counts per state via RPC (avoids Supabase 1000-row default limit)
+  const { data: stateCounts } = await supabase.rpc("get_state_system_counts");
 
   const counts = new Map<string, number>();
   for (const row of stateCounts || []) {
-    counts.set(row.state_code, (counts.get(row.state_code) || 0) + 1);
+    counts.set(row.state_code, Number(row.system_count));
   }
 
   return (

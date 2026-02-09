@@ -196,7 +196,7 @@ export default async function StatePage({ params }: PageProps) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-            {cities.slice(0, 100).map((city) => {
+            {cities.slice(0, 100).map((city: { name: string; count: number }) => {
               const citySlug = city.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
               return (
                 <Link

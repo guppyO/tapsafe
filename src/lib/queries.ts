@@ -96,7 +96,7 @@ export async function getStateWaterSystems(
 
 // State stats
 export async function getStateStats(stateCode: string) {
-  const [systemsRes, violationsRes, healthRes] = await Promise.all([
+  const [systemsRes, violationsRes, populationRes] = await Promise.all([
     supabase
       .from("water_systems")
       .select("*", { count: "exact", head: true })
@@ -104,47 +104,28 @@ export async function getStateStats(stateCode: string) {
       .eq("pws_activity_code", "A"),
     supabase
       .from("water_systems")
-      .select("violation_count")
+      .select("*", { count: "exact", head: true })
       .eq("state_code", stateCode)
       .eq("pws_activity_code", "A")
       .gt("violation_count", 0),
-    supabase
-      .from("water_systems")
-      .select("population_served")
-      .eq("state_code", stateCode)
-      .eq("pws_activity_code", "A")
-      .not("population_served", "is", null),
+    supabase.rpc("get_state_total_population", { p_state_code: stateCode }),
   ]);
 
   const totalSystems = systemsRes.count || 0;
-  const systemsWithViolations = violationsRes.data?.length || 0;
-  const totalPopulation = healthRes.data?.reduce(
-    (sum, ws) => sum + (ws.population_served || 0),
-    0
-  ) || 0;
+  const systemsWithViolations = violationsRes.count || 0;
+  const totalPopulation = Number(populationRes.data) || 0;
 
   return { totalSystems, systemsWithViolations, totalPopulation };
 }
 
 // Cities in a state
 export async function getStateCities(stateCode: string) {
-  const { data } = await supabase
-    .from("water_systems")
-    .select("city_name")
-    .eq("state_code", stateCode)
-    .eq("pws_activity_code", "A")
-    .not("city_name", "is", null);
+  const { data } = await supabase.rpc("get_state_city_counts", { p_state_code: stateCode });
 
-  const cityCounts = new Map<string, number>();
-  for (const row of data || []) {
-    if (row.city_name) {
-      cityCounts.set(row.city_name, (cityCounts.get(row.city_name) || 0) + 1);
-    }
-  }
-
-  return Array.from(cityCounts.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
+  return (data || []).map((row: { city_name: string; system_count: number }) => ({
+    name: row.city_name,
+    count: Number(row.system_count),
+  }));
 }
 
 // Water systems for a city
