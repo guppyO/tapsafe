@@ -60,20 +60,12 @@ export default function BlogPage() {
                   {post.excerpt}
                 </p>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1.5">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-sm text-primary hover:underline font-medium"
-                  >
-                    Read more
-                  </Link>
+                <div className="flex gap-1.5">
+                  {post.tags.slice(0, 3).map((tag) => (
+                    <Badge key={tag} variant="secondary" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
               </CardContent>
             </Card>
