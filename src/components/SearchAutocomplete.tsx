@@ -214,7 +214,7 @@ export function SearchAutocomplete({
             autoComplete="off"
             className={
               isHero
-                ? "w-full pl-10 pr-10 h-12 text-base rounded-lg border bg-white/10 border-white/20 text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                ? "w-full pl-10 pr-10 h-12 text-base rounded-lg border bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 dark:bg-white/10 dark:border-white/20 dark:text-white dark:placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
                 : "w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
             }
           />
